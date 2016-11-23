@@ -10,16 +10,19 @@ import (
 	"github.com/cumulodev/nimbusec"
 )
 
+// api reference: https://kb.nimbusec.com/API/API#agents
 func main() {
 	key := flag.String("key", "", "API key")
 	secret := flag.String("secret", "", "API secret")
 	flag.Parse()
 
+	// setup nimbusec api
 	api, err := nimbusec.NewAPI(nimbusec.DefaultAPI, *key, *secret)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// fetch available nimbusec agents
 	agents, err := api.FindAgents(nimbusec.EmptyFilter)
 	if err != nil {
 		log.Fatal(err)
@@ -39,6 +42,7 @@ func main() {
 		log.Fatal("Index out of range")
 	}
 
+	// prepare download over api
 	b, err := api.DownloadAgent(agents[i])
 	if err != nil {
 		log.Fatal(err)
